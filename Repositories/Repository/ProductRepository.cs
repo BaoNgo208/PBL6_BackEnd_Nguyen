@@ -182,6 +182,29 @@ namespace PBL6.Repositories.Repository
               .ToListAsync();
 
         }
+        public async Task<List<Product>> GetNewProducts(int skip, int take)
+        {
+            try
+            {
+                var newproducts = await _dataContext.Products
+                    .OrderByDescending(p => p.CreatedDate)
+                    .Take(40)
+                    .ToListAsync();
+                var products = await _dataContext.Products
+                    .Where(p => newproducts.Select(tp => tp.ProductId).Contains(p.ProductId))
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
+                return products;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching new products.");
+
+                return new List<Product>();
+            }
+
+        }
 
     }
 }

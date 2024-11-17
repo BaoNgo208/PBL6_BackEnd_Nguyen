@@ -59,5 +59,10 @@ namespace PBL6.Services.ServiceImpl
             var products = await _productRepository.GetTrendingProducts(skip,size);
             return _mapper.Map<List<ProductDto>>(products);
         }
+        public async Task<List<ProductDto>> GetProductsNew(int skip, int size)
+        {
+            var products = await _productRepository.GetNewProducts(skip, size);
+            return _mapper.Map<List<ProductDto>>(products);
+        }
     }
 }
